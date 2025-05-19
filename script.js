@@ -52,7 +52,10 @@ async function sendForm() {
   };
 
   try {
-    const res = await fetch(SCRIPT_URL, {
+    const res = await fetch(SCRIPT_URL,
+    {
+      method: "POST",
+      mode: "cors", {
       method: "POST",
       body: JSON.stringify(payload),
       headers: { "Content-Type": "application/json" },
@@ -132,7 +135,10 @@ async function submitAnswer(entryId) {
   }
 
   try {
-    const res = await fetch(SCRIPT_URL + "?action=reply", {
+    const res = await fetch(SCRIPT_URL + "?action=reply",
+    {
+      method: "POST",
+      mode: "cors", {
       method: "POST",
       body: JSON.stringify({
         id: entryId,
