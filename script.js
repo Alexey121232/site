@@ -1,7 +1,5 @@
-const SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbxDLGHiLgbfVkXwNQUpUQADCL7VCtd681_af_AXChSlOstWYmWFhM6HMkAtx63fadH8/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxDLGHiLgbfVkXwNQUpUQADCL7VCtd681_af_AXChSlOstWYmWFhM6HMkAtx63fadH8/exec";
 
-// Авторизация (handleLogin) должна быть здесь, если она используется
 async function handleLogin() {
   const login = document.getElementById("login").value;
   const password = document.getElementById("password").value;
@@ -13,11 +11,7 @@ async function handleLogin() {
   }
 
   try {
-    const res = await fetch(
-      `${SCRIPT_URL}?login=${encodeURIComponent(
-        login
-      )}&password=${encodeURIComponent(password)}`
-    );
+    const res = await fetch(`${SCRIPT_URL}?login=${encodeURIComponent(login)}&password=${encodeURIComponent(password)}`);
     const data = await res.json();
 
     if (data.success) {
@@ -31,6 +25,7 @@ async function handleLogin() {
     errorField.textContent = "Ошибка подключения к серверу.";
   }
 }
+
 async function sendForm() {
   const type = document.getElementById("form-type").value;
   const topic = document.getElementById("form-topic").value;
@@ -43,20 +38,12 @@ async function sendForm() {
     return;
   }
 
-  const payload = {
-    type,
-    topic,
-    text,
-    role,
-    userId,
-  };
+  const payload = { type, topic, text, role, userId };
 
   try {
-    const res = await fetch(SCRIPT_URL,
-    {
+    const res = await fetch(SCRIPT_URL, {
       method: "POST",
-      mode: "cors", {
-      method: "POST",
+      mode: "cors",
       body: JSON.stringify(payload),
       headers: { "Content-Type": "application/json" },
     });
@@ -79,27 +66,12 @@ async function loadEntries() {
   const container = document.getElementById("entries");
   container.innerHTML = "";
 
-  const canReplyRoles = [
-    "завуч",
-    "социальный педагог",
-    "директор",
-    "супер админ",
-    "системный админ",
-  ];
+  const canReplyRoles = ["завуч", "социальный педагог", "директор", "супер админ", "системный админ"];
 
   data.entries.forEach((entry) => {
-    const canSeeComplaint =
-      entry.type === "жалоба" &&
-      ["директор", "системный админ", "супер админ"].includes(role);
-    const canSeeQuestion =
-      entry.type === "вопрос" &&
-      [
-        "директор",
-        "завуч",
-        "социальный педагог",
-        "системный админ",
-        "супер админ",
-      ].includes(role);
+    const canSeeComplaint = entry.type === "жалоба" && ["директор", "системный админ", "супер админ"].includes(role);
+    const canSeeQuestion = entry.type === "вопрос" && ["директор", "завуч", "социальный педагог", "системный админ", "супер админ"].includes(role);
+
     if (canSeeComplaint || canSeeQuestion) {
       const div = document.createElement("div");
       div.className = "entry";
@@ -129,25 +101,19 @@ async function loadEntries() {
 async function submitAnswer(entryId) {
   const answer = document.getElementById(`answer-${entryId}`).value;
   const userId = localStorage.getItem("userId");
+
   if (!answer) {
     alert("Введите текст ответа.");
     return;
   }
 
   try {
-    const res = await fetch(SCRIPT_URL + "?action=reply",
-    {
+    const res = await fetch(SCRIPT_URL + "?action=reply", {
       method: "POST",
-      mode: "cors", {
-      method: "POST",
-      body: JSON.stringify({
-        id: entryId,
-        answer,
-        answeredBy: userId,
-      }),
+      mode: "cors",
+      body: JSON.stringify({ id: entryId, answer, answeredBy: userId }),
       headers: { "Content-Type": "application/json" },
     });
-
     const data = await res.json();
     alert(data.message || "Ответ отправлен");
     loadEntries();
