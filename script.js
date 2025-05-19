@@ -1,5 +1,5 @@
 const SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbzhfURPgEDbhQM-j3stSIQLocGOYAa_iUgST8zGhkl7wYhLrAFk-5AMV5ba1W-KHK-d/exec";
+  "https://script.google.com/macros/s/AKfycbxDLGHiLgbfVkXwNQUpUQADCL7VCtd681_af_AXChSlOstWYmWFhM6HMkAtx63fadH8/exec";
 
 // Авторизация (handleLogin) должна быть здесь, если она используется
 async function handleLogin() {
